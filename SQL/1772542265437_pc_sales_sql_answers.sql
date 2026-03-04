@@ -89,15 +89,79 @@ FROM PC_DATA.dbo.[1772542271737_pc_data]
 -- INTERMEDIATE QUESTIONS
 
 -- 11. Calculate total revenue (SUM of Sale Price).
+
+SELECT SUM(Sale_Price) AS total_revenue
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+;
+
 -- 12. Calculate total profit (SUM of Sale Price - Cost Price).
+
+SELECT SUM(Sale_Price - Cost_Price) AS total_price
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+;
+
 -- 13. Find the average Discount Amount.
+
+SELECT AVG(Discount_Amount) AS avg_discount_amount
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+;
+
 -- 14. Calculate total Finance Amount issued.
+
+SELECT SUM(CAST (Finance_Amount AS bigint)) AS total_finance_amount_issued
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+;
+
 -- 15. Find total revenue per PC Make.
+
+SELECT PC_Make,
+SUM(Sale_Price) AS total_revenue_per_pc_make
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY PC_Make
+;
+
 -- 16. Find average Sale Price per Storage Type.
+
+SELECT Storage_Type,
+AVG(Sale_Price) avg_sale_price_per_storage_type
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Storage_Type
+;
+
 -- 17. Calculate total revenue per Shop Name.
+
+SELECT Shop_Name,
+SUM(Sale_Price) AS total_revenue_per_shop_name
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Shop_Name
+;
+
 -- 18. Calculate total revenue per Sales Person Name.
+
+SELECT Sales_Person_Name,
+SUM(Sale_Price) AS total_revenue_per_sales_person_name
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Sales_Person_Name
+;
+
 -- 19. Find average Credit Score per Payment Method.
+
+SELECT Payment_Method,
+AVG(Credit_Score) AS avg_credit_score_per_payment_method
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Payment_Method
+;
+
 -- 20. Calculate total Cost of Repairs per Sales Person Department.
+
+SELECT Sales_Person_Department,
+SUM(CAST(Cost_of_Repairs AS bigint)) AS total_cost_of_repairs_per_sales_person_department
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Sales_Person_Department
+;
+
+SELECT *
+FROM PC_DATA.dbo.[1772542271737_pc_data]
 
 -- ADVANCED QUESTIONS
 
