@@ -166,13 +166,84 @@ FROM PC_DATA.dbo.[1772542271737_pc_data]
 -- ADVANCED QUESTIONS
 
 -- 21. Calculate profit per Shop Name.
+
+SELECT Shop_Name,
+SUM(Sale_Price - Cost_Price) AS profit_per_shop
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Shop_Name
+
 -- 22. Calculate profit margin per sale ((Sale Price - Cost Price) / Sale Price).
+
+SELECT 
+    PC_Model,
+    PC_Make,
+    Sale_Price,
+    Cost_Price,
+    (Sale_Price - Cost_Price) / Sale_Price AS profit_margin
+FROM PC_DATA.dbo.[1772542271737_pc_data];
+
 -- 23. Determine which Continent has the highest total revenue.
+
+SELECT TOP 1 Continent,
+SUM(Sale_Price) AS highest_total_revenue
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Continent
+ORDER BY highest_total_revenue desc
+
 -- 24. Calculate average Sale Price per RAM size.
+
+SELECT *
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+
+SELECT RAM,
+AVG(Sale_Price) as avg_sale_price_per_ram_size
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY RAM
+
 -- 25. Find the PC Model with the highest Sale Price.
--- 26. Calculate the average number of days between Purchase Date and Ship Date.
+
+SELECT TOP 1 PC_Model,
+MAX(Sale_Price) AS highest_sale_price
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY PC_Model
+ORDER BY highest_sale_price desc
+
+-- 26. Calculate the average number of days between Purchase Date and Ship Date. INCOMPLETE
+
+SELECT *
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+
+SELECT FORMAT(Purchase_Date , 'dd') AS Purchase_Day,
+FORMAT(Ship_Date , 'dd') AS Ship_Day
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+
+SELECT avg(Purchase_Date - Ship_Date) as avg_days
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+
 -- 27. Determine which Sales Person Department generates the highest revenue.
+
+SELECT TOP 1 Sales_Person_Department,
+SUM(Sale_Price) AS highest_revenue
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Sales_Person_Department
+ORDER BY highest_revenue desc
+
 -- 28. Calculate total revenue per Storage Capacity.
+
+SELECT Storage_Capacity,
+SUM(Sale_Price) AS total_revenue_per_storage_capacity
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY Storage_Capacity
+
 -- 29. Identify sales where Sale Price is lower than PC Market Price.
+
+SELECT Sale_Price, PC_Market_Price
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+WHERE Sale_Price < PC_Market_Price
+
 -- 30. Rank Sales Person Name by Total Sales per Employee using a window function.
+
+SELECT Sales_Person_Name, Total_Sales_per_Employee,
+RANK() OVER (ORDER BY Total_Sales_per_Employee) AS Rank
+FROM PC_DATA.dbo.[1772542271737_pc_data]
 
