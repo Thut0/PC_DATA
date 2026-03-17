@@ -174,13 +174,15 @@ GROUP BY Shop_Name
 
 -- 22. Calculate profit margin per sale ((Sale Price - Cost Price) / Sale Price).
 
-SELECT 
-    PC_Model,
+SELECT
     PC_Make,
-    Sale_Price,
-    Cost_Price,
-    (Sale_Price - Cost_Price) / Sale_Price AS profit_margin
-FROM PC_DATA.dbo.[1772542271737_pc_data];
+    SUM(Sale_Price) AS Revenue,
+    SUM(Sale_Price) * 100.0
+    / SUM(SUM(Sale_Price))
+    OVER () AS Revenue_Percentage
+FROM PC_DATA.dbo.[1772542271737_pc_data]
+GROUP BY PC_Make
+ORDER BY Revenue
 
 -- 23. Determine which Continent has the highest total revenue.
 
@@ -210,14 +212,17 @@ ORDER BY highest_sale_price desc
 
 -- 26. Calculate the average number of days between Purchase Date and Ship Date. INCOMPLETE
 
-SELECT *
-FROM PC_DATA.dbo.[1772542271737_pc_data]
+--SELECT *
+--FROM PC_DATA.dbo.[1772542271737_pc_data]
 
-SELECT FORMAT(Purchase_Date , 'dd') AS Purchase_Day,
-FORMAT(Ship_Date , 'dd') AS Ship_Day
-FROM PC_DATA.dbo.[1772542271737_pc_data]
+--SELECT FORMAT(Purchase_Date , 'dd') AS Purchase_Day,
+--FORMAT(Ship_Date , 'dd') AS Ship_Day
+--FROM PC_DATA.dbo.[1772542271737_pc_data]
 
-SELECT avg(Purchase_Date - Ship_Date) as avg_days
+--SELECT avg(Purchase_Date - Ship_Date) as avg_days
+--FROM PC_DATA.dbo.[1772542271737_pc_data]
+
+SELECT avg(datediff(day,try_convert(date,purchase_date),try_convert(date,ship_date))) as avgshipdays
 FROM PC_DATA.dbo.[1772542271737_pc_data]
 
 -- 27. Determine which Sales Person Department generates the highest revenue.
@@ -244,6 +249,6 @@ WHERE Sale_Price < PC_Market_Price
 -- 30. Rank Sales Person Name by Total Sales per Employee using a window function.
 
 SELECT Sales_Person_Name, Total_Sales_per_Employee,
-RANK() OVER (ORDER BY Total_Sales_per_Employee) AS Rank
+RANK() OVER (ORDER BY Total_Sales_per_Employee desc) AS Rank
 FROM PC_DATA.dbo.[1772542271737_pc_data]
 
